@@ -7,34 +7,37 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   late Database _db;
+  Future? _dbInit;
 
-  initDatabase() async {
-    _db = await openDatabase('assets/1101.sqlite3');
-    var databasePath = await getDatabasesPath();
-    var path = join(databasePath, '1101.sqlite3');
+  Future initDatabase() async {
+    _dbInit ??= await () async {
+      _db = await openDatabase('assets/1101.sqlite3');
+      var databasePath = await getDatabasesPath();
+      var path = join(databasePath, '1101.sqlite3');
 
-    //Check if DB exists
-    var exists = await databaseExists(path);
+      //Check if DB exists
+      var exists = await databaseExists(path);
 
-    if (!exists) {
-      print('Create a new copy from assets');
+      if (!exists) {
+        print('Create a new copy from assets');
 
-      //Check if parent directory exists
-      try {
-        await Directory(dirname(path)).create(recursive: true);
-      } catch (_) {}
+        //Check if parent directory exists
+        try {
+          await Directory(dirname(path)).create(recursive: true);
+        } catch (_) {}
 
-      //Copy from assets
-      ByteData data = await rootBundle.load(join("assets", "1101.sqlite3"));
-      List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        //Copy from assets
+        ByteData data = await rootBundle.load(join("assets", "1101.sqlite3"));
+        List<int> bytes =
+            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-      //Write and flush the bytes
-      await File(path).writeAsBytes(bytes, flush: true);
-    }
+        //Write and flush the bytes
+        await File(path).writeAsBytes(bytes, flush: true);
+      }
 
-    //Open the database
-    _db = await openDatabase(path, readOnly: true);
+      //Open the database
+      _db = await openDatabase(path, readOnly: true);
+    }();
   }
 
   Future<List<PaliBook>> getPali() async {

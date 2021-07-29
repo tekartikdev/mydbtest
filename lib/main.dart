@@ -1,13 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mydbtest/src/models/palibook.dart';
-import 'package:mydbtest/src/services/db_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mydbtest/src/models/modal_fit.dart';
+import 'package:mydbtest/src/models/palibook.dart';
+import 'package:mydbtest/src/services/db_service.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  if (Platform.isWindows || Platform.isLinux) {
+    // Initialize FFI
+    sqfliteFfiInit();
+    // Change the default factory
+    databaseFactory = databaseFactoryFfi;
+  }
   runApp(MyApp());
 }
 
