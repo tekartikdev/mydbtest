@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ModalFit extends StatelessWidget {
@@ -14,10 +13,10 @@ class ModalFit extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text('you selected $key'),
-            leading: Icon(Icons.edit),
+            leading: const Icon(Icons.edit),
             onTap: () => Navigator.of(context).pop(),
           ),
-          ListTile(
+          const ListTile(
             title: Text(
                 'This is the definition of the text.  It means this and that and also this too.'),
           )

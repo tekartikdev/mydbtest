@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mydbtest/src/models/modal_fit.dart';
 import 'package:mydbtest/src/models/palibook.dart';
 import 'package:mydbtest/src/services/db_service.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
@@ -17,10 +15,12 @@ void main() {
     // Change the default factory
     databaseFactory = databaseFactoryFfi;
   }
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,14 +41,16 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -69,10 +71,11 @@ class _MyHomePageState extends State<MyHomePage> {
         body: FutureBuilder<List<PaliBook>>(
             future: dbService.getPali(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData)
-                return Center(
+              if (!snapshot.hasData) {
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
+              }
               return IndexedListView.builder(
                 controller: controller,
                 itemBuilder: itemBuilder(context, snapshot),
@@ -96,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
           print('\n there was a selection $wrd \n');
           //Fluttertoast.showToast(msg: wrd);
           if (wrd.length > 2) {
-            Map map2 = {'selectedword': wrd};
             showMaterialModalBottomSheet(
               expand: false,
               context: context,
@@ -106,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         enableInteractiveSelection: true,
-        style: TextStyle(fontSize: 15),
+        style: const TextStyle(fontSize: 15),
       );
     };
   }
