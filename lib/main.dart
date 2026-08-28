@@ -55,8 +55,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final dbService = DatabaseService();
-  static IndexedScrollController controller =
-      IndexedScrollController(initialIndex: 1200);
+  static IndexedScrollController controller = IndexedScrollController(
+    initialIndex: 1200,
+  );
 
   @override
   void dispose() {
@@ -67,24 +68,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: FutureBuilder<List<PaliBook>>(
-            future: dbService.getPali(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return IndexedListView.builder(
-                controller: controller,
-                itemBuilder: itemBuilder(context, snapshot),
-              );
-            }));
+      appBar: AppBar(),
+      body: FutureBuilder<List<PaliBook>>(
+        future: dbService.getPali(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return IndexedListView.builder(
+            controller: controller,
+            itemBuilder: itemBuilder(context, snapshot),
+          );
+        },
+      ),
+    );
   }
 
   IndexedWidgetBuilderOrNull itemBuilder(
-      BuildContext context, AsyncSnapshot snapshot) {
+    BuildContext context,
+    AsyncSnapshot snapshot,
+  ) {
     return (BuildContext context, int index) {
       return SelectableText(
         snapshot.data![index].id.toString() + snapshot.data![index].pHTM,
@@ -93,8 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         onSelectionChanged: (TextSelection selection, cause) {
           String s = snapshot.data![index].pHTM;
-          String wrd =
-              s.substring(selection.baseOffset - 4, selection.extentOffset - 4);
+          String wrd = s.substring(
+            selection.baseOffset - 4,
+            selection.extentOffset - 4,
+          );
           controller = IndexedScrollController(initialIndex: index);
           print('\n there was a selection $wrd \n');
           //Fluttertoast.showToast(msg: wrd);

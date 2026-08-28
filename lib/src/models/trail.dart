@@ -7,8 +7,9 @@ class Trail {
 
   factory Trail.fromJson(Map<dynamic, dynamic> json) {
     return Trail(
-        name: json['name'],
-        difficulty: json['difficulty'],
-        distance: json['distance']);
+      name: json['name'],
+      difficulty: json['difficulty'],
+      distance: json['distance'],
+    );
   }
 }

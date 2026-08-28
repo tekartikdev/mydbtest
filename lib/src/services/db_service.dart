@@ -28,8 +28,10 @@ class DatabaseService {
 
         //Copy from assets
         ByteData data = await rootBundle.load(join("assets", "1101.sqlite3"));
-        List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        List<int> bytes = data.buffer.asUint8List(
+          data.offsetInBytes,
+          data.lengthInBytes,
+        );
 
         //Write and flush the bytes
         await File(path).writeAsBytes(bytes, flush: true);

@@ -7,8 +7,9 @@ class CityName {
 
   factory CityName.fromJson(Map<dynamic, dynamic> json) {
     return CityName(
-        name: json['name'],
-        lang: json['lang'],
-        cityposrowid: json['cityposrowid']);
+      name: json['name'],
+      lang: json['lang'],
+      cityposrowid: json['cityposrowid'],
+    );
   }
 }
